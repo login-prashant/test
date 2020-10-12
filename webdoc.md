@@ -1,1435 +1,476 @@
-[Skip to main content](#main)
+# HYAS Insight
 
-[](https://www.microsoft.com)
+![HYAS](https://www.hyas.com/hubfs/logo-1.svg "HYAS")
+HYAS Insight provides On-Demand Enrichment of Passive DNS, Dynamic DNS, Passive Hash, SSL Certificate, Device Geo (Mobile Geolocation), Sinkhole, and Whois endpoints using the HYAS Insight enrichment API source.
 
-Contents
+<br>
 
-Exit focus mode
+ This connector is available in the following products and regions:
 
--   Bookmark
--   [Feedback](#feedback "Send feedback about this page")
--   [Edit](https://github.com/MicrosoftDocs/BusinessApplicationPlatform-Connectors/blob/live/docs/hyasinsight/index.yml "Edit This Document")
--   Share
-    -   Twitter
-    -   LinkedIn
-    -   Facebook
-    -   Email
+ | Service | Class | Regions |
+ | ------ | ------ | ------ |
+ | Logic Apps | Standard | All [Logic Apps regions](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=logic-apps&regions=all) except the following:<br>-Azure Government regions<br>-Azure China regions |
+ | Power Automate | Premium | All [Power Automate regions](https://docs.microsoft.com/en-us/power-automate/regions-overview) except the following:<br>-US Government (GCC)<br>-US Government (GCC High)<br>-China Cloud operated by 21Vianet |
+ | Power Apps | Premium | All [Power Apps regions](https://docs.microsoft.com/en-us/power-platform/admin/regions-overview#what-regions-are-available) except the following:<br>-US Government (GCC)<br>-US Government (GCC High)<br>-China Cloud operated by 21Vianet |
 
-Table of contents
+<br>
 
-HYAS Insight (Preview)
-======================
+## Pre-requisites
+To use this integration, you need to have a HYAS Insight API Key provisioned by HYAS Infosec Inc to authenticate requests to HYAS Insight API.
 
-![](https://connectoricons-prod.azureedge.net/releases/v1.0.1403/1.0.1403.2163/hyasinsight/icon.png)
+<br>
 
-HYAS Insight integration to Microsoft Azure Sentinel provides direct,
-high volume access to HYAS Insight data. It enables investigators and
-analysts to understand and defend against cyber adversaries and their
-infrastructure.
-
-### In this article
-
-This connector is available in the following products and regions:
-
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Service              Class      Regions
-  -------------------- ---------- -----------------------------------------------------------------------------------------------------------------------------------------------
-  **Logic Apps**       Standard   All [Logic Apps regions](https://azure.microsoft.com/global-infrastructure/services/?products=logic-apps&regions=all) except the following: \
-                                   - Azure Government regions \
-                                   - Azure China regions
-
-  **Power Automate**   Premium    All [Power Automate regions](/en-us/flow/regions-overview) except the following: \
-                                   - US Government (GCC) \
-                                   - US Government (GCC High) \
-                                   - China Cloud operated by 21Vianet
-
-  **Power Apps**       Premium    All [Power Apps regions](/en-us/powerapps/administrator/regions-overview#what-regions-are-available) except the following: \
-                                   - US Government (GCC) \
-                                   - US Government (GCC High) \
-                                   - China Cloud operated by 21Vianet
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  Contact   
-  --------- --------------------------------------------------------------
-  Name      HYAS Infosec
-  URL       [https://www.hyas.com/contact](https://www.hyas.com/contact)
-  Email     support@hyas.com
-
-  Connector Metadata   
-  -------------------- ------------------------------------------------------------------------------------
-  Publisher            HYAS Infosec
-  Website              [https://www.hyas.com](https://www.hyas.com)
-  Privacy policy       [https://www.hyas.com/privacy-statement/](https://www.hyas.com/privacy-statement/)
-  Categories           Security;Website
-
-Pre-requisites
---------------
-
-You will need the following to proceed:
-
--   A Microsoft Power Apps or Power Automate plan with custom connector
-    feature
--   An Azure subscription
--   HYAS Insight API Key
-
-Support and documentation:
---------------------------
-
-For all the support requests and general queries you can contact
-support@hyas.com or visit [contact-us](https://www.hyas.com/contact)
-
-Creating a connection
----------------------
-
+## Creating a connection
 To connect your account, you will need the following information:
 
-+--------------------------+--------------------------+--------------------------+
-| Name                     | Type                     | Description              |
-+==========================+==========================+==========================+
-| HYAS Insight API Key     | securestring             | The HYAS Insight API Key |
-|                          |                          | for this api             |
-+--------------------------+--------------------------+--------------------------+
+| Name | Type | Description
+ | ------ | ------ | ------ |
+ | X-API-Key | securestring | The X-API-Key for HYAS Insight |
+  
+<br>
 
-Throttling Limits {#limits}
------------------
+ ## Throttling Limits
+ | Name | Calls | Renewal Period
+ | ------ | ------ | ------ |
+ | API calls per connection | 1000 | 1 Second |
+ 
+<br>
 
-  Name                       Calls   Renewal Period
-  -------------------------- ------- ----------------
-  API calls per connection   100     60 seconds
+  
+ ## Actions:
+ | Action Name | Description
+  | ------ | ------ |
+  | [Retrieve Passive DNS Information for Domain](#retrieve-passive-dns-information-for-domain) |  Retrieve on demand Passive DNS enrichment data for Domain |
+  | [Retrieve Passive DNS Information for IP Address](#retrieve-passive-dns-information-for-ip-address) |  Retrieve on demand Passive DNS enrichment data for IP Address |
+  | [Retrieve Whois Historic Information for Domain](#retrieve-whois-historic-information-for-domain) | Retrieve on demand Whois Historic enrichment data for Domain |
+  | [Retrieve Whois Historic Information for Email Address](#retrieve-whois-historic-information-for-email-address) | Retrieve on demand Whois Historic enrichment data for Email Address |
+  | [Retrieve Whois Historic Information for Phone Number](#retrieve-whois-historic-information-for-phone-number) | Retrieve on demand Whois Historic enrichment data for Phone Number |
+  | [Retrieve Whois Current Information for Domain](#retrieve-whois-current-information-for-domain) | Retrieve on demand Whois Current enrichment data for Domain |
+  | [Retrieve Dynamic DNS Information for IP Address](#retrieve-dynamic-dns-information-for-ip-address) | Retrieve on demand Dynamic DNS enrichment data for IP Address |
+  | [Retrieve Dynamic DNS Information for Email Address](#retrieve-dynamic-dns-information-for-email-address) | Retrieve on demand Dynamic DNS enrichment data for Email Address |
+  | [Retrieve Passive Hash Information for IP Address](#retrieve-passive-hash-information-for-ip-address) |Retrieve on demand Passive Hash enrichment data for IP Address |
+  | [Retrieve Sinkhole Information for IP Address](#retrieve-sinkhole-information-for-ip-address) | Retrieve on demand Sinkhole enrichment data for IP Address |
+  | [Retrieve SSL Certificate Information for IP Address](#retrieve-ssl-certificate-information-for-ip-address) | Retrieve on demand SSL Certificate enrichment data for IP Address |
+  | [Retrieve Device Geo Information for IPv4 Address](#retrieve-device-geo-information-for-ipv4-address) | Retrieve on demand Device Geo enrichment data for IPv4 Address |
+  | [Retrieve Device Geo Information for IPv6 Address](#retrieve-device-geo-information-for-ipv6-address) | Retrieve on demand Device Geo enrichment data for IPv6 Address |
+  
 
-Actions
--------
+<br>
 
-+--------------------------------------+--------------------------------------+
-| [Retrieve Current WHOIS information  | Retrieve Current WHOIS enrichment    |
-| for                                  | data for domain.                     |
-| domain](#retrieve-current-whois-info |                                      |
-| rmation-for-domain)                  |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Device Geo information for | Retrieve Device Geo enrichment data  |
-| IPv4                                 | for IPv4 address.                    |
-| address](#retrieve-device-geo-inform |                                      |
-| ation-for-ipv4-address)              |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Device Geo information for | Retrieve Device Geo enrichment data  |
-| IPv6                                 | for IPv6 address.                    |
-| address](#retrieve-device-geo-inform |                                      |
-| ation-for-ipv6-address)              |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Dynamic DNS information    | Retrieve Dynamic DNS enrichment data |
-| for email                            | for email address.                   |
-| address](#retrieve-dynamic-dns-infor |                                      |
-| mation-for-email-address)            |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Dynamic DNS information    | Retrieve Dynamic DNS enrichment data |
-| for IP                               | for IP address.                      |
-| address](#retrieve-dynamic-dns-infor |                                      |
-| mation-for-ip-address)               |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Historic WHOIS information | Retrieve Historic WHOIS enrichment   |
-| for                                  | data for domain.                     |
-| domain](#retrieve-historic-whois-inf |                                      |
-| ormation-for-domain)                 |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Historic WHOIS information | Retrieve Historic WHOIS enrichment   |
-| for email                            | data for email address.              |
-| address](#retrieve-historic-whois-in |                                      |
-| formation-for-email-address)         |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Historic WHOIS information | Retrieve Historic WHOIS enrichment   |
-| for phone                            | data for phone number.               |
-| number](#retrieve-historic-whois-inf |                                      |
-| ormation-for-phone-number)           |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Passive DNS information    | Retrieve Passive DNS enrichment data |
-| for                                  | for domain.                          |
-| domain](#retrieve-passive-dns-inform |                                      |
-| ation-for-domain)                    |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Passive DNS information    | Retrieve Passive DNS enrichment data |
-| for IP                               | for IP address.                      |
-| address](#retrieve-passive-dns-infor |                                      |
-| mation-for-ip-address)               |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Passive Hash information   | Retrieve Passive Hash enrichment     |
-| for IP                               | data for IP address.                 |
-| address](#retrieve-passive-hash-info |                                      |
-| rmation-for-ip-address)              |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve Sinkhole information for   | Retrieve Sinkhole enrichment data    |
-| IP                                   | for IP address.                      |
-| address](#retrieve-sinkhole-informat |                                      |
-| ion-for-ip-address)                  |                                      |
-+--------------------------------------+--------------------------------------+
-| [Retrieve SSL certificate            | Retrieve SSL certificate enrichment  |
-| information for IP                   | data for IP address.                 |
-| address](#retrieve-ssl-certificate-i |                                      |
-| nformation-for-ip-address)           |                                      |
-+--------------------------------------+--------------------------------------+
+### Retrieve Passive DNS Information for Domain
 
-### Retrieve Current WHOIS information for domain
+Operation ID: DOMAIN_PASSIVE_DNS
 
-Operation ID:
-:   DOMAIN\_WHOIS\_CURRENT
+Retrieve on demand Passive DNS enrichment data for Domain
 
-Retrieve Current WHOIS enrichment data for domain.
+#### Parameters
 
-#### Parameters {#required-parameters}
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | Domain | domain | True  | string | Domain you want to enrich |
 
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| Domain         | domain         | True           | string         | Domain you     |
-|                |                |                |                | want to        |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
 
 #### Returns
+##### **Body** : [PassiveDNSResults](#passivednsresults)
 
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-| items              | items              | array of object    | The items object.  |
-+--------------------+--------------------+--------------------+--------------------+
-| abuse\_emails      | items.abuse\_email | array of string    | The abuse emails   |
-|                    | s                  |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| address            | items.address      | array of string    | The address        |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| city               | items.city         | array of string    | The city of the    |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| country            | items.country      | array of string    | The country of the |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| data               | items.data         | string             | The data           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| datetime           | items.datetime     | string             | The datetime       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | items.domain       | string             | The domain of the  |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_2tld       | items.domain\_2tld | string             | The second-level   |
-|                    |                    |                    | domain of the      |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_created\_d | items.domain\_crea | string             | The date and time  |
-| atetime            | ted\_datetime      |                    | when the Whois     |
-|                    |                    |                    | record was         |
-|                    |                    |                    | created.           |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_expires\_d | items.domain\_expi | string             | The date and time  |
-| atetime            | res\_datetime      |                    | when the Whois     |
-|                    |                    |                    | record expires.    |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_updated\_d | items.domain\_upda | string             | The date and time  |
-| atetime            | ted\_datetime      |                    | when the Whois     |
-|                    |                    |                    | record was last    |
-|                    |                    |                    | updated.           |
-+--------------------+--------------------+--------------------+--------------------+
-| email              | items.email        | array of string    | The email          |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| idn\_name          | items.idn\_name    | string             | The international  |
-|                    |                    |                    | domain name        |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| meta\_data         | items.meta\_data   | string             | The metadata       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| name               | items.name         | array of string    | The contact name   |
-|                    |                    |                    | (registrant        |
-|                    |                    |                    | contact,           |
-|                    |                    |                    | administrative     |
-|                    |                    |                    | contact, technical |
-|                    |                    |                    | contact, or abuse  |
-|                    |                    |                    | contact.)          |
-+--------------------+--------------------+--------------------+--------------------+
-| nameserver         | items.nameserver   | array of string    | The nameserver     |
-|                    |                    |                    | domain.            |
-+--------------------+--------------------+--------------------+--------------------+
-| organization       | items.organization | array of string    | The organization   |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| phone              | items.phone        | array of string    | The phone number   |
-|                    |                    |                    | of the registrant  |
-|                    |                    |                    | in e164 format.    |
-+--------------------+--------------------+--------------------+--------------------+
-| registrar          | items.registrar    | string             | The domain         |
-|                    |                    |                    | registrar.         |
-+--------------------+--------------------+--------------------+--------------------+
-| state              | items.state        | array of string    | The state where    |
-|                    |                    |                    | domain was         |
-|                    |                    |                    | registered.        |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_hash        | items.whois\_hash  | string             | The hash           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_id          | items.whois\_id    | string             | The whois id       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_nameserver  | items.whois\_names | array of object    | The                |
-|                    | erver              |                    | whois\_nameserver  |
-|                    |                    |                    | object.            |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | items.whois\_names | string             | The nameserver’s   |
-|                    | erver.domain       |                    | domain             |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_2tld       | items.whois\_names | string             | The nameserver’s   |
-|                    | erver.domain\_2tld |                    | domain\_2tld       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_related\_na | items.whois\_names | string             | The nameserver’s   |
-| meserver\_id       | erver.whois\_relat |                    | Id Information.    |
-|                    | ed\_nameserver\_id |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_pii         | items.whois\_pii   | array of object    | The whois\_pii     |
-|                    |                    |                    | object.            |
-+--------------------+--------------------+--------------------+--------------------+
-| address            | items.whois\_pii.a | string             | The personal       |
-|                    | ddress             |                    | identity address   |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| city               | items.whois\_pii.c | string             | The personal       |
-|                    | ity                |                    | identity city      |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| data               | items.whois\_pii.d | string             | The personal       |
-|                    | ata                |                    | identity data      |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| email              | items.whois\_pii.e | string             | The personal       |
-|                    | mail               |                    | identity email     |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| geo\_country\_alph | items.whois\_pii.g | string             | The personal       |
-| a\_2               | eo\_country\_alpha |                    | identity country   |
-|                    | \_2                |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| name               | items.whois\_pii.n | string             | The personal       |
-|                    | ame                |                    | identity name      |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| organization       | items.whois\_pii.o | string             | The personal       |
-|                    | rganization        |                    | identity           |
-|                    |                    |                    | organization       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| phone\_e164        | items.whois\_pii.p | string             | The personal       |
-|                    | hone\_e164         |                    | identity           |
-|                    |                    |                    | Phone\_e164        |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| state              | items.whois\_pii.s | string             | The personal       |
-|                    | tate               |                    | identity state     |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_related\_pi | items.whois\_pii.w | string             | The personal       |
-| i\_id              | hois\_related\_pii |                    | identity Id        |
-|                    | \_id               |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_related\_ty | items.whois\_pii.w | string             | The personal       |
-| pe                 | hois\_related\_typ |                    | identity related   |
-|                    | e                  |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| source             | source             | string             | The source         |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| total\_count       | total\_count       | integer            | The total count    |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Device Geo information for IPv4 address
-
-Operation ID:
-:   IPV4\_DEVICE\_GEO
-
-Retrieve Device Geo enrichment data for IPv4 address.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| IPv4 address   | ipv4           | True           | string         | IPv4 address   |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| datetime           | datetime           | string             | A date-time string |
-|                    |                    |                    | in RFC 3339        |
-|                    |                    |                    | format.            |
-+--------------------+--------------------+--------------------+--------------------+
-| device\_geo\_id    | device\_geo\_id    | string             | Internal record    |
-|                    |                    |                    | ID.                |
-+--------------------+--------------------+--------------------+--------------------+
-| device\_user\_agen | device\_user\_agen | string             | The user agent     |
-| t                  | t                  |                    | string for the     |
-|                    |                    |                    | device.            |
-+--------------------+--------------------+--------------------+--------------------+
-| geo\_country\_alph | geo\_country\_alph | string             | The ISO 3316       |
-| a\_2               | a\_2               |                    | alpha-2 code for   |
-|                    |                    |                    | the country        |
-|                    |                    |                    | associated with    |
-|                    |                    |                    | the lat/long       |
-|                    |                    |                    | reported.          |
-+--------------------+--------------------+--------------------+--------------------+
-|                    | geo\_horizontal\_a | float              | The GPS horizontal |
-|                    | ccuracy            |                    | accuracy.          |
-+--------------------+--------------------+--------------------+--------------------+
-| ipv4               | ipv4               | string             | The ipv4 address   |
-|                    |                    |                    | assigned to the    |
-|                    |                    |                    | device. A device   |
-|                    |                    |                    | may have either or |
-|                    |                    |                    | ipv4 and ipv6.     |
-+--------------------+--------------------+--------------------+--------------------+
-| ipv6               | ipv6               | string             | The ipv6 address   |
-|                    |                    |                    | assigned to the    |
-|                    |                    |                    | device. A device   |
-|                    |                    |                    | may have either or |
-|                    |                    |                    | ipv4 and ipv6.     |
-+--------------------+--------------------+--------------------+--------------------+
-| latitude           | latitude           | float              | Units are degrees  |
-|                    |                    |                    | on the WGS 84      |
-|                    |                    |                    | spheroid.          |
-+--------------------+--------------------+--------------------+--------------------+
-| longitude          | longitude          | float              | Units are degrees  |
-|                    |                    |                    | on the WGS 84      |
-|                    |                    |                    | spheroid.          |
-+--------------------+--------------------+--------------------+--------------------+
-| wifi\_bssid        | wifi\_bssid        | string             | The BSSID (MAC     |
-|                    |                    |                    | address) of the    |
-|                    |                    |                    | wifi router that   |
-|                    |                    |                    | the device         |
-|                    |                    |                    | communicated       |
-|                    |                    |                    | through.           |
-+--------------------+--------------------+--------------------+--------------------+
-| wifi\_ssid         | wifi\_ssid         | string             | The SSID (name) of |
-|                    |                    |                    | the wifi network   |
-|                    |                    |                    | that the device    |
-|                    |                    |                    | communicated       |
-|                    |                    |                    | through.           |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Device Geo information for IPv6 address
-
-Operation ID:
-:   IPV6\_DEVICE\_GEO
-
-Retrieve Device Geo enrichment data for IPv6 address.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| IPv6 address   | ipv6           | True           | string         | IPv6 address   |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| datetime           | datetime           | string             | A date-time string |
-|                    |                    |                    | in RFC 3339        |
-|                    |                    |                    | format.            |
-+--------------------+--------------------+--------------------+--------------------+
-| device\_geo\_id    | device\_geo\_id    | string             | Internal record    |
-|                    |                    |                    | ID.                |
-+--------------------+--------------------+--------------------+--------------------+
-| device\_user\_agen | device\_user\_agen | string             | The user agent     |
-| t                  | t                  |                    | string for the     |
-|                    |                    |                    | device.            |
-+--------------------+--------------------+--------------------+--------------------+
-| geo\_country\_alph | geo\_country\_alph | string             | The ISO 3316       |
-| a\_2               | a\_2               |                    | alpha-2 code for   |
-|                    |                    |                    | the country        |
-|                    |                    |                    | associated with    |
-|                    |                    |                    | the lat/long       |
-|                    |                    |                    | reported.          |
-+--------------------+--------------------+--------------------+--------------------+
-|                    | geo\_horizontal\_a | float              | The GPS horizontal |
-|                    | ccuracy            |                    | accuracy.          |
-+--------------------+--------------------+--------------------+--------------------+
-| ipv4               | ipv4               | string             | The ipv4 address   |
-|                    |                    |                    | assigned to the    |
-|                    |                    |                    | device. A device   |
-|                    |                    |                    | may have either or |
-|                    |                    |                    | ipv4 and ipv6.     |
-+--------------------+--------------------+--------------------+--------------------+
-| ipv6               | ipv6               | string             | The ipv6 address   |
-|                    |                    |                    | assigned to the    |
-|                    |                    |                    | device. A device   |
-|                    |                    |                    | may have either or |
-|                    |                    |                    | ipv4 and ipv6.     |
-+--------------------+--------------------+--------------------+--------------------+
-| latitude           | latitude           | float              | Units are degrees  |
-|                    |                    |                    | on the WGS 84      |
-|                    |                    |                    | spheroid.          |
-+--------------------+--------------------+--------------------+--------------------+
-| longitude          | longitude          | float              | Units are degrees  |
-|                    |                    |                    | on the WGS 84      |
-|                    |                    |                    | spheroid.          |
-+--------------------+--------------------+--------------------+--------------------+
-| wifi\_bssid        | wifi\_bssid        | string             | The BSSID (MAC     |
-|                    |                    |                    | address) of the    |
-|                    |                    |                    | wifi router that   |
-|                    |                    |                    | the device         |
-|                    |                    |                    | communicated       |
-|                    |                    |                    | through.           |
-+--------------------+--------------------+--------------------+--------------------+
-| wifi\_ssid         | wifi\_ssid         | string             | The SSID (name) of |
-|                    |                    |                    | the wifi network   |
-|                    |                    |                    | that the device    |
-|                    |                    |                    | communicated       |
-|                    |                    |                    | through.           |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Dynamic DNS information for email address
-
-Operation ID:
-:   EMAIL\_DYNAMIC\_DNS
-
-Retrieve Dynamic DNS enrichment data for email address.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| Email address  | email          | True           | string         | Email address  |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| a\_record          | a\_record          | string             | The A record for   |
-|                    |                    |                    | the domain.        |
-+--------------------+--------------------+--------------------+--------------------+
-| account            | account            | string             | The account holder |
-|                    |                    |                    | name.              |
-+--------------------+--------------------+--------------------+--------------------+
-| created            | created            | string             | The date which the |
-|                    |                    |                    | domain was         |
-|                    |                    |                    | created.           |
-+--------------------+--------------------+--------------------+--------------------+
-| created\_ip        | created\_ip        | string             | The ip address of  |
-|                    |                    |                    | the account        |
-|                    |                    |                    | holder.            |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | domain             | string             | The domain         |
-|                    |                    |                    | associated with    |
-|                    |                    |                    | the dynamic dns    |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_creator\_i | domain\_creator\_i | string             | The ip address of  |
-| p                  | p                  |                    | the domain         |
-|                    |                    |                    | creator.           |
-+--------------------+--------------------+--------------------+--------------------+
-| email              | email              | string             | The email address  |
-|                    |                    |                    | connected to the   |
-|                    |                    |                    | domain.            |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Dynamic DNS information for IP address
-
-Operation ID:
-:   IP\_DYNAMIC\_DNS
-
-Retrieve Dynamic DNS enrichment data for IP address.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| IPv4 address   | ip             | True           | string         | IPv4 address   |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| a\_record          | a\_record          | string             | The A record for   |
-|                    |                    |                    | the domain.        |
-+--------------------+--------------------+--------------------+--------------------+
-| account            | account            | string             | The account holder |
-|                    |                    |                    | name.              |
-+--------------------+--------------------+--------------------+--------------------+
-| created            | created            | string             | The date which the |
-|                    |                    |                    | domain was         |
-|                    |                    |                    | created.           |
-+--------------------+--------------------+--------------------+--------------------+
-| created\_ip        | created\_ip        | string             | The ip address of  |
-|                    |                    |                    | the account        |
-|                    |                    |                    | holder.            |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | domain             | string             | The domain         |
-|                    |                    |                    | associated with    |
-|                    |                    |                    | the dynamic dns    |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_creator\_i | domain\_creator\_i | string             | The ip address of  |
-| p                  | p                  |                    | the domain         |
-|                    |                    |                    | creator.           |
-+--------------------+--------------------+--------------------+--------------------+
-| email              | email              | string             | The email address  |
-|                    |                    |                    | connected to the   |
-|                    |                    |                    | domain.            |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Historic WHOIS information for domain
-
-Operation ID:
-:   DOMAIN\_WHOIS\_HISTORIC
-
-Retrieve Historic WHOIS enrichment data for domain.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| Domain         | domain         | True           | string         | Domain you     |
-|                |                |                |                | want to        |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| address            | address            | array of string    | The address        |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| city               | city               | array of string    | The city           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| country            | country            | array of string    | The country        |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| data               | data               | string             | The data           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| datetime           | datetime           | string             | The datetime       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | domain             | string             | The domain of the  |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_2tld       | domain\_2tld       | string             | The second-level   |
-|                    |                    |                    | domain of the      |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_created\_d | domain\_created\_d | string             | The date and time  |
-| atetime            | atetime            |                    | when the whois     |
-|                    |                    |                    | record was         |
-|                    |                    |                    | created.           |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_expires\_d | domain\_expires\_d | string             | The date and time  |
-| atetime            | atetime            |                    | when the whois     |
-|                    |                    |                    | record expires.    |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_updated\_d | domain\_updated\_d | string             | The date and time  |
-| atetime            | atetime            |                    | when the whois     |
-|                    |                    |                    | record was last    |
-|                    |                    |                    | updated.           |
-+--------------------+--------------------+--------------------+--------------------+
-| email              | email              | array of string    | The email          |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| idn\_name          | idn\_name          | string             | The international  |
-|                    |                    |                    | domain name.       |
-+--------------------+--------------------+--------------------+--------------------+
-| meta\_data         | meta\_data         | string             | The metadata       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| name               | name               | array of string    | The name           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| nameserver         | nameserver         | array of string    | The nameserver     |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| phone              | phone              | array of object    | Array of object,   |
-|                    |                    |                    | The phone number   |
-|                    |                    |                    | registrant contact |
-|                    |                    |                    | in e164 format     |
-|                    |                    |                    | along with geo     |
-|                    |                    |                    | info.              |
-+--------------------+--------------------+--------------------+--------------------+
-| phone              | phone.phone        | string             | The phone number   |
-|                    |                    |                    | registrant contact |
-|                    |                    |                    | in e164 format.    |
-+--------------------+--------------------+--------------------+--------------------+
-| carrier            | phone.phone\_info. | string             | Phone number       |
-|                    | carrier            |                    | carrier.           |
-+--------------------+--------------------+--------------------+--------------------+
-| country            | phone.phone\_info. | string             | Phone number       |
-|                    | country            |                    | country.           |
-+--------------------+--------------------+--------------------+--------------------+
-| geo                | phone.phone\_info. | string             | Phone number geo   |
-|                    | geo                |                    | Can be city or     |
-|                    |                    |                    | province or region |
-|                    |                    |                    | or country.        |
-+--------------------+--------------------+--------------------+--------------------+
-| privacy\_punch     | privacy\_punch     | boolean            | True if this       |
-|                    |                    |                    | record has         |
-|                    |                    |                    | additional         |
-|                    |                    |                    | information        |
-|                    |                    |                    | bypassing privacy  |
-|                    |                    |                    | protect.           |
-+--------------------+--------------------+--------------------+--------------------+
-| registrar          | registrar          | string             | The domain         |
-|                    |                    |                    | registrar.         |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_hash        | whois\_hash        | string             | The hash           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_id          | whois\_id          | string             | The whois id       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Historic WHOIS information for email address
-
-Operation ID:
-:   EMAIL\_WHOIS\_HISTORIC
-
-Retrieve Historic WHOIS enrichment data for email address.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| Email address  | email          | True           | string         | Email address  |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| address            | address            | array of string    | The address        |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| city               | city               | array of string    | The city           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| country            | country            | array of string    | The country        |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| data               | data               | string             | The data           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| datetime           | datetime           | string             | The datetime       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | domain             | string             | The domain of the  |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_2tld       | domain\_2tld       | string             | The second-level   |
-|                    |                    |                    | domain of the      |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_created\_d | domain\_created\_d | string             | The date and time  |
-| atetime            | atetime            |                    | when the whois     |
-|                    |                    |                    | record was         |
-|                    |                    |                    | created.           |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_expires\_d | domain\_expires\_d | string             | The date and time  |
-| atetime            | atetime            |                    | when the whois     |
-|                    |                    |                    | record expires.    |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_updated\_d | domain\_updated\_d | string             | The date and time  |
-| atetime            | atetime            |                    | when the whois     |
-|                    |                    |                    | record was last    |
-|                    |                    |                    | updated.           |
-+--------------------+--------------------+--------------------+--------------------+
-| email              | email              | array of string    | The email          |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| idn\_name          | idn\_name          | string             | The international  |
-|                    |                    |                    | domain name.       |
-+--------------------+--------------------+--------------------+--------------------+
-| meta\_data         | meta\_data         | string             | The metadata       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| name               | name               | array of string    | The name           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| nameserver         | nameserver         | array of string    | The nameserver     |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| phone              | phone              | array of object    | Array of object,   |
-|                    |                    |                    | The phone number   |
-|                    |                    |                    | registrant contact |
-|                    |                    |                    | in e164 format     |
-|                    |                    |                    | along with geo     |
-|                    |                    |                    | info.              |
-+--------------------+--------------------+--------------------+--------------------+
-| phone              | phone.phone        | string             | The phone number   |
-|                    |                    |                    | registrant contact |
-|                    |                    |                    | in e164 format.    |
-+--------------------+--------------------+--------------------+--------------------+
-| carrier            | phone.phone\_info. | string             | Phone number       |
-|                    | carrier            |                    | carrier.           |
-+--------------------+--------------------+--------------------+--------------------+
-| country            | phone.phone\_info. | string             | Phone number       |
-|                    | country            |                    | country.           |
-+--------------------+--------------------+--------------------+--------------------+
-| geo                | phone.phone\_info. | string             | Phone number geo   |
-|                    | geo                |                    | Can be city or     |
-|                    |                    |                    | province or region |
-|                    |                    |                    | or country.        |
-+--------------------+--------------------+--------------------+--------------------+
-| privacy\_punch     | privacy\_punch     | boolean            | True if this       |
-|                    |                    |                    | record has         |
-|                    |                    |                    | additional         |
-|                    |                    |                    | information        |
-|                    |                    |                    | bypassing privacy  |
-|                    |                    |                    | protect.           |
-+--------------------+--------------------+--------------------+--------------------+
-| registrar          | registrar          | string             | The domain         |
-|                    |                    |                    | registrar.         |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_hash        | whois\_hash        | string             | The hash           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_id          | whois\_id          | string             | The whois id       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Historic WHOIS information for phone number
-
-Operation ID:
-:   PHONE\_WHOIS\_HISTORIC
-
-Retrieve Historic WHOIS enrichment data for phone number.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| Phone number   | phone          | True           | string         | Phone number   |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich. ( e164 |
-|                |                |                |                | format. Eg: (  |
-|                |                |                |                | +41585855634 ) |
-|                |                |                |                | )              |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| address            | address            | array of string    | The address        |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| city               | city               | array of string    | The city           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| country            | country            | array of string    | The country        |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| data               | data               | string             | The data           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| datetime           | datetime           | string             | The datetime       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | domain             | string             | The domain of the  |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_2tld       | domain\_2tld       | string             | The second-level   |
-|                    |                    |                    | domain of the      |
-|                    |                    |                    | registrant.        |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_created\_d | domain\_created\_d | string             | The date and time  |
-| atetime            | atetime            |                    | when the whois     |
-|                    |                    |                    | record was         |
-|                    |                    |                    | created.           |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_expires\_d | domain\_expires\_d | string             | The date and time  |
-| atetime            | atetime            |                    | when the whois     |
-|                    |                    |                    | record expires.    |
-+--------------------+--------------------+--------------------+--------------------+
-| domain\_updated\_d | domain\_updated\_d | string             | The date and time  |
-| atetime            | atetime            |                    | when the whois     |
-|                    |                    |                    | record was last    |
-|                    |                    |                    | updated.           |
-+--------------------+--------------------+--------------------+--------------------+
-| email              | email              | array of string    | The email          |
-|                    |                    |                    | information        |
-+--------------------+--------------------+--------------------+--------------------+
-| idn\_name          | idn\_name          | string             | The international  |
-|                    |                    |                    | domain name.       |
-+--------------------+--------------------+--------------------+--------------------+
-| meta\_data         | meta\_data         | string             | The metadata       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| name               | name               | array of string    | The name           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| nameserver         | nameserver         | array of string    | The nameserver     |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| phone              | phone              | array of object    | Array of object,   |
-|                    |                    |                    | The phone number   |
-|                    |                    |                    | registrant contact |
-|                    |                    |                    | in e164 format     |
-|                    |                    |                    | along with geo     |
-|                    |                    |                    | info.              |
-+--------------------+--------------------+--------------------+--------------------+
-| phone              | phone.phone        | string             | The phone number   |
-|                    |                    |                    | registrant contact |
-|                    |                    |                    | in e164 format.    |
-+--------------------+--------------------+--------------------+--------------------+
-| carrier            | phone.phone\_info. | string             | Phone number       |
-|                    | carrier            |                    | carrier.           |
-+--------------------+--------------------+--------------------+--------------------+
-| country            | phone.phone\_info. | string             | Phone number       |
-|                    | country            |                    | country.           |
-+--------------------+--------------------+--------------------+--------------------+
-| geo                | phone.phone\_info. | string             | Phone number geo   |
-|                    | geo                |                    | Can be city or     |
-|                    |                    |                    | province or region |
-|                    |                    |                    | or country.        |
-+--------------------+--------------------+--------------------+--------------------+
-| privacy\_punch     | privacy\_punch     | boolean            | True if this       |
-|                    |                    |                    | record has         |
-|                    |                    |                    | additional         |
-|                    |                    |                    | information        |
-|                    |                    |                    | bypassing privacy  |
-|                    |                    |                    | protect.           |
-+--------------------+--------------------+--------------------+--------------------+
-| registrar          | registrar          | string             | The domain         |
-|                    |                    |                    | registrar.         |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_hash        | whois\_hash        | string             | The hash           |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-| whois\_id          | whois\_id          | string             | The whois id       |
-|                    |                    |                    | information.       |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Passive DNS information for domain
-
-Operation ID:
-:   DOMAIN\_PASSIVE\_DNS
-
-Retrieve Passive DNS enrichment data for domain.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| Domain         | domain         | True           | string         | Domain you     |
-|                |                |                |                | want to        |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| cert\_name         | cert\_name         | string             | The certificate    |
-|                    |                    |                    | provider name.     |
-+--------------------+--------------------+--------------------+--------------------+
-| count              | count              | integer            | The passive dns    |
-|                    |                    |                    | count.             |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | domain             | string             | The domain of the  |
-|                    |                    |                    | passive dns        |
-|                    |                    |                    | information        |
-|                    |                    |                    | requested.         |
-+--------------------+--------------------+--------------------+--------------------+
-| first\_seen        | first\_seen        | string             | The first time     |
-|                    |                    |                    | this domain was    |
-|                    |                    |                    | seen.              |
-+--------------------+--------------------+--------------------+--------------------+
-| city\_name         | ip.geo.city\_name  | string             | City of the ip     |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| country\_iso\_code | ip.geo.country\_is | string             | Country ISO code   |
-|                    | o\_code            |                    | of the ip          |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| country\_name      | ip.geo.country\_na | string             | Country name of    |
-|                    | me                 |                    | the ip             |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| location\_latitude | ip.geo.location\_l | string             | The latitude of    |
-|                    | atitude            |                    | the ip             |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| location\_longitud | ip.geo.location\_l | string             | The longitude of   |
-| e                  | ongitude           |                    | the ip             |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| postal\_code       | ip.geo.postal\_cod | string             | The postalcode of  |
-|                    | e                  |                    | the ip             |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| ip                 | ip.ip              | string             | IP of the          |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| autonomous\_system | ip.isp.autonomous\ | string             | The ASN of the ip. |
-| \_number           | _system\_number    |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| autonomous\_system | ip.isp.autonomous\ | string             | The ASO of the ip. |
-| \_organization     | _system\_organizat |                    |                    |
-|                    | ion                |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| ip\_address        | ip.isp.ip\_address | string             | The IP.            |
-+--------------------+--------------------+--------------------+--------------------+
-| isp                | ip.isp.isp         | string             | The Internet       |
-|                    |                    |                    | Service Provider.  |
-+--------------------+--------------------+--------------------+--------------------+
-| organization       | ip.isp.organizatio | string             | The ISP            |
-|                    | n                  |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| ipv4               | ipv4               | string             | The ipv4 address   |
-|                    |                    |                    | of the passive dns |
-|                    |                    |                    | record.            |
-+--------------------+--------------------+--------------------+--------------------+
-| ipv6               | ipv6               | string             | The ipv6 address   |
-|                    |                    |                    | of the passive dns |
-|                    |                    |                    | record.            |
-+--------------------+--------------------+--------------------+--------------------+
-| last\_seen         | last\_seen         | string             | The last time this |
-|                    |                    |                    | domain was seen.   |
-+--------------------+--------------------+--------------------+--------------------+
-| sha1               | sha1               | string             | The sha1.          |
-+--------------------+--------------------+--------------------+--------------------+
-| sources            | sources            | array of string    | A list of pDNS     |
-|                    |                    |                    | providers which    |
-|                    |                    |                    | the data came      |
-|                    |                    |                    | from.              |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Passive DNS information for IP address
-
-Operation ID:
-:   IP\_PASSIVE\_DNS
-
-Retrieve Passive DNS enrichment data for IP address.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| IPv4 address   | ipv4           | True           | string         | IPv4 address   |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| cert\_name         | cert\_name         | string             | The certificate    |
-|                    |                    |                    | provider name.     |
-+--------------------+--------------------+--------------------+--------------------+
-| count              | count              | integer            | The passive dns    |
-|                    |                    |                    | count.             |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | domain             | string             | The domain of the  |
-|                    |                    |                    | passive dns        |
-|                    |                    |                    | information        |
-|                    |                    |                    | requested.         |
-+--------------------+--------------------+--------------------+--------------------+
-| first\_seen        | first\_seen        | string             | The first time     |
-|                    |                    |                    | this domain was    |
-|                    |                    |                    | seen.              |
-+--------------------+--------------------+--------------------+--------------------+
-| city\_name         | ip.geo.city\_name  | string             | City of the ip     |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| country\_iso\_code | ip.geo.country\_is | string             | Country ISO code   |
-|                    | o\_code            |                    | of the ip          |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| country\_name      | ip.geo.country\_na | string             | Country name of    |
-|                    | me                 |                    | the ip             |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| location\_latitude | ip.geo.location\_l | string             | The latitude of    |
-|                    | atitude            |                    | the ip             |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| location\_longitud | ip.geo.location\_l | string             | The longitude of   |
-| e                  | ongitude           |                    | the ip             |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| postal\_code       | ip.geo.postal\_cod | string             | The postalcode of  |
-|                    | e                  |                    | the ip             |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| ip                 | ip.ip              | string             | IP of the          |
-|                    |                    |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| autonomous\_system | ip.isp.autonomous\ | string             | The ASN of the ip. |
-| \_number           | _system\_number    |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| autonomous\_system | ip.isp.autonomous\ | string             | The ASO of the ip. |
-| \_organization     | _system\_organizat |                    |                    |
-|                    | ion                |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| ip\_address        | ip.isp.ip\_address | string             | The IP.            |
-+--------------------+--------------------+--------------------+--------------------+
-| isp                | ip.isp.isp         | string             | The Internet       |
-|                    |                    |                    | Service Provider.  |
-+--------------------+--------------------+--------------------+--------------------+
-| organization       | ip.isp.organizatio | string             | The ISP            |
-|                    | n                  |                    | organization.      |
-+--------------------+--------------------+--------------------+--------------------+
-| ipv4               | ipv4               | string             | The ipv4 address   |
-|                    |                    |                    | of the passive dns |
-|                    |                    |                    | record.            |
-+--------------------+--------------------+--------------------+--------------------+
-| ipv6               | ipv6               | string             | The ipv6 address   |
-|                    |                    |                    | of the passive dns |
-|                    |                    |                    | record.            |
-+--------------------+--------------------+--------------------+--------------------+
-| last\_seen         | last\_seen         | string             | The last time this |
-|                    |                    |                    | domain was seen.   |
-+--------------------+--------------------+--------------------+--------------------+
-| sha1               | sha1               | string             | The sha1.          |
-+--------------------+--------------------+--------------------+--------------------+
-| sources            | sources            | array of string    | A list of pDNS     |
-|                    |                    |                    | providers which    |
-|                    |                    |                    | the data came      |
-|                    |                    |                    | from.              |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Passive Hash information for IP address
-
-Operation ID:
-:   PASSIVE\_HASH
-
-Retrieve Passive Hash enrichment data for IP address.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| IPv4 address   | ipv4           | True           | string         | IPv4 address   |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| domain             | domain             | string             | The domain of the  |
-|                    |                    |                    | passive hash       |
-|                    |                    |                    | information        |
-|                    |                    |                    | requested.         |
-+--------------------+--------------------+--------------------+--------------------+
-| md5\_count         | md5\_count         | integer            | The passive dns    |
-|                    |                    |                    | count.             |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve Sinkhole information for IP address
-
-Operation ID:
-:   SINKHOLE
-
-Retrieve Sinkhole enrichment data for IP address.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| IPv4 address   | ipv4           | True           | string         | IPv4 address   |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-|                    |                    | array of object    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| count              | count              | integer            | The sinkhole       |
-|                    |                    |                    | count.             |
-+--------------------+--------------------+--------------------+--------------------+
-| country\_name      | country\_name      | string             | The country of the |
-|                    |                    |                    | ip.                |
-+--------------------+--------------------+--------------------+--------------------+
-| data\_port         | data\_port         | integer            | The data port.     |
-+--------------------+--------------------+--------------------+--------------------+
-| datetime           | datetime           | string             | The first seen     |
-|                    |                    |                    | date of the        |
-|                    |                    |                    | sinkhole.          |
-+--------------------+--------------------+--------------------+--------------------+
-| ipv4               | ipv4               | string             | The ipv4 of the    |
-|                    |                    |                    | sinkhole.          |
-+--------------------+--------------------+--------------------+--------------------+
-| last\_seen         | last\_seen         | string             | The last seen date |
-|                    |                    |                    | of the sinkhole.   |
-+--------------------+--------------------+--------------------+--------------------+
-| organization\_name | organization\_name | string             | The isp            |
-|                    |                    |                    | organization for   |
-|                    |                    |                    | the ip.            |
-+--------------------+--------------------+--------------------+--------------------+
-| sink\_source       | sink\_source       | string             | The ipv4 of the    |
-|                    |                    |                    | sink source.       |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Retrieve SSL certificate information for IP address
-
-Operation ID:
-:   SSL\_CERTIFICATE
-
-Retrieve SSL certificate enrichment data for IP address.
-
-#### Parameters {#required-parameters}
-
-+----------------+----------------+----------------+----------------+----------------+
-| Name           | Key            | Required       | Type           | Description    |
-+================+================+================+================+================+
-| IPv4 address   | ip             | True           | string         | IPv4 address   |
-|                |                |                |                | you want to    |
-|                |                |                |                | enrich.        |
-+----------------+----------------+----------------+----------------+----------------+
-
-#### Returns {#returns}
-
-+--------------------+--------------------+--------------------+--------------------+
-| Name               | Path               | Type               | Description        |
-+====================+====================+====================+====================+
-| related\_count     | related\_count     | integer            | The number of ip   |
-|                    |                    |                    | addresses          |
-|                    |                    |                    | connected to this  |
-|                    |                    |                    | certificate.       |
-+--------------------+--------------------+--------------------+--------------------+
-| ssl\_certs         | ssl\_certs         | array of object    | The ssl\_certs     |
-|                    |                    |                    | object.            |
-+--------------------+--------------------+--------------------+--------------------+
-| ip                 | ssl\_certs.ip      | string             | The ip address     |
-|                    |                    |                    | associated with    |
-|                    |                    |                    | certificate.       |
-+--------------------+--------------------+--------------------+--------------------+
-| cert\_key          | ssl\_certs.ssl\_ce | string             | The certificate    |
-|                    | rt.cert\_key       |                    | key (sha1).        |
-+--------------------+--------------------+--------------------+--------------------+
-| expire\_date       | ssl\_certs.ssl\_ce | string             | The expiry date of |
-|                    | rt.expire\_date    |                    | the certificate.   |
-+--------------------+--------------------+--------------------+--------------------+
-| issue\_date        | ssl\_certs.ssl\_ce | string             | The issue date of  |
-|                    | rt.issue\_date     |                    | the certificate.   |
-+--------------------+--------------------+--------------------+--------------------+
-| issuer\_commonName | ssl\_certs.ssl\_ce | string             | The common name    |
-|                    | rt.issuer\_commonN |                    | that the           |
-|                    | ame                |                    | certificate was    |
-|                    |                    |                    | issued from.       |
-+--------------------+--------------------+--------------------+--------------------+
-| issuer\_countryNam | ssl\_certs.ssl\_ce | string             | The country ISO    |
-| e                  | rt.issuer\_country |                    | the certificate    |
-|                    | Name               |                    | was issued from.   |
-+--------------------+--------------------+--------------------+--------------------+
-| issuer\_localityNa | ssl\_certs.ssl\_ce | string             | The city where the |
-| me                 | rt.issuer\_localit |                    | issuer company is  |
-|                    | yName              |                    | legally located.   |
-+--------------------+--------------------+--------------------+--------------------+
-| issuer\_organizati | ssl\_certs.ssl\_ce | string             | The organization   |
-| onName             | rt.issuer\_organiz |                    | name that issued   |
-|                    | ationName          |                    | the certificate.   |
-+--------------------+--------------------+--------------------+--------------------+
-| issuer\_organizati | ssl\_certs.ssl\_ce | string             | The organization   |
-| onalUnitName       | rt.issuer\_organiz |                    | unit name that     |
-|                    | ationalUnitName    |                    | issued the         |
-|                    |                    |                    | certificate.       |
-+--------------------+--------------------+--------------------+--------------------+
-| issuer\_stateOrPro | ssl\_certs.ssl\_ce | string             | The issuer state   |
-| vinceName          | rt.issuer\_stateOr |                    | or province.       |
-|                    | ProvinceName       |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| md5                | ssl\_certs.ssl\_ce | string             | The certificate    |
-|                    | rt.md5             |                    | MD5.               |
-+--------------------+--------------------+--------------------+--------------------+
-| serial\_number     | ssl\_certs.ssl\_ce | float              | The certificate    |
-|                    | rt.serial\_number  |                    | serial number.     |
-+--------------------+--------------------+--------------------+--------------------+
-| sha1               | ssl\_certs.ssl\_ce | string             | The certificate    |
-|                    | rt.sha1            |                    | sha1.              |
-+--------------------+--------------------+--------------------+--------------------+
-| sha\_256           | ssl\_certs.ssl\_ce | string             | The certificate    |
-|                    | rt.sha\_256        |                    | sha256.            |
-+--------------------+--------------------+--------------------+--------------------+
-| sig\_algo          | ssl\_certs.ssl\_ce | string             | The certificate    |
-|                    | rt.sig\_algo       |                    | signature          |
-|                    |                    |                    | algorithm.         |
-+--------------------+--------------------+--------------------+--------------------+
-| signature          | ssl\_certs.ssl\_ce | array of string    | Signature split    |
-|                    | rt.signature       |                    | into multiple      |
-|                    |                    |                    | lines.             |
-+--------------------+--------------------+--------------------+--------------------+
-| ssl\_version       | ssl\_certs.ssl\_ce | integer            | The SSL version.   |
-|                    | rt.ssl\_version    |                    |                    |
-+--------------------+--------------------+--------------------+--------------------+
-| subject\_commonNam | ssl\_certs.ssl\_ce | string             | The subject name   |
-| e                  | rt.subject\_common |                    | that the           |
-|                    | Name               |                    | certificate was    |
-|                    |                    |                    | issued to.         |
-+--------------------+--------------------+--------------------+--------------------+
-| subject\_countryNa | ssl\_certs.ssl\_ce | string             | The country the    |
-| me                 | rt.subject\_countr |                    | certificate was    |
-|                    | yName              |                    | issued to.         |
-+--------------------+--------------------+--------------------+--------------------+
-| subject\_localityN | ssl\_certs.ssl\_ce | string             | The city where the |
-| ame                | rt.subject\_locali |                    | subject company is |
-|                    | tyName             |                    | legally located.   |
-+--------------------+--------------------+--------------------+--------------------+
-| subject\_organizat | ssl\_certs.ssl\_ce | string             | The organization   |
-| ionName            | rt.subject\_organi |                    | name that recieved |
-|                    | zationName         |                    | the certificate.   |
-+--------------------+--------------------+--------------------+--------------------+
-| subject\_organizat | ssl\_certs.ssl\_ce | string             | The organization   |
-| ionalUnitName      | rt.subject\_organi |                    | unit name that     |
-|                    | zationalUnitName   |                    | recieved the       |
-|                    |                    |                    | certificate.       |
-+--------------------+--------------------+--------------------+--------------------+
-| subject\_stateOrPr | ssl\_certs.ssl\_ce | string             | The state or       |
-| ovinceName         | rt.subject\_stateO |                    | province name      |
-|                    | rProvinceName      |                    | where the subject  |
-|                    |                    |                    | company is         |
-|                    |                    |                    | located.           |
-+--------------------+--------------------+--------------------+--------------------+
-| timestamp          | ssl\_certs.ssl\_ce | string             | The certificate    |
-|                    | rt.timestamp       |                    | date and time.     |
-+--------------------+--------------------+--------------------+--------------------+
-
-### Is this page helpful? {.has-text-weight-semibold .has-margin-top-none .has-margin-bottom-small}
-
-Yes
-
-No
-
-Any additional feedback?
-
-Skip
-
-Submit
-
-Thank you.
-
-Feedback {#feedback .title .is-3 .has-margin-top-large}
---------
-
-Submit and view feedback for
-
-[This
-product](https://docs.microsoft.com/connectors/custom-connectors/provide-feedback)
-This page
-
-[View all page
-feedback](https://github.com/MicrosoftDocs/BusinessApplicationPlatform-Connectors-public/issues)
-
-[](#)
-
-Theme
-
--   Light
--   Dark
--   High contrast
-
--   -   [Previous Version
-    Docs](https://docs.microsoft.com/en-us/previous-versions/)
--   [Blog](https://docs.microsoft.com/en-us/teamblog)
--   [Contribute](https://docs.microsoft.com/en-us/contribute)
--   [Privacy & Cookies](https://go.microsoft.com/fwlink/?LinkId=521839)
--   [Terms of Use](https://docs.microsoft.com/en-us/legal/termsofuse)
--   [Site Feedback](https://aka.ms/sitefeedback)
--   [Trademarks](https://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/EN-US.aspx)
--   © Microsoft 2020
-
-### Is this page helpful? {.has-text-weight-semibold .has-margin-top-none .has-margin-bottom-small}
-
-Yes
-
-No
-
-Any additional feedback?
-
-Skip
-
-Submit
-
-Thank you.
-
-### In this article
-
-[](#)
-
-Theme
-
--   Light
--   Dark
--   High contrast
-
--   -   [Previous Version
-    Docs](https://docs.microsoft.com/en-us/previous-versions/)
--   [Blog](https://docs.microsoft.com/en-us/teamblog)
--   [Contribute](https://docs.microsoft.com/en-us/contribute)
--   [Privacy & Cookies](https://go.microsoft.com/fwlink/?LinkId=521839)
--   [Terms of Use](https://docs.microsoft.com/en-us/legal/termsofuse)
--   [Site Feedback](https://aka.ms/sitefeedback)
--   [Trademarks](https://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/EN-US.aspx)
--   © Microsoft 2020
+<br>
 
+### Retrieve Passive DNS Information for IP Address
+
+Operation ID: IP_PASSIVE_DNS
+
+Retrieve on demand Passive DNS enrichment data for IP Address
+
+#### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | IPv4 Address | ipv4 |  True | string | IPv4 Address you want to enrich |
+
+
+#### Returns
+##### **Body** : [PassiveDNSResults](#passivednsresults)
+
+<br>
+
+### Retrieve Whois Historic Information for Domain
+
+Operation ID: DOMAIN_WHOIS_HISTORIC
+
+Retrieve on demand Whois Historic enrichment data for Domain
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | Domain | domain | True | string | Domain you want to enrich |
+
+ #### Returns
+##### **Body** : [WhoisHistoricResult](#whoishistoricresult)
+
+<br>
+
+### Retrieve Whois Historic Information for Email Address
+
+Operation ID: EMAIL_WHOIS_HISTORIC
+
+Retrieve on demand Whois Historic enrichment data for Email Address
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | Email Address | email | True  | string | Email Address you want to enrich |
+
+ #### Returns
+##### **Body** : [WhoisHistoricResult](#whoishistoricresult)
+
+<br>
+
+### Retrieve Whois Historic Information for Phone Number
+
+Operation ID: PHONE_WHOIS_HISTORIC
+
+Retrieve on demand Whois Historic enrichment data for Phone Number
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | Phone Number | phone | True  | string | Phone Number you want to enrich ( e164 format. Eg: ( +41585855634 ) ) |
+
+ #### Returns
+##### **Body** : [WhoisHistoricResult](#whoishistoricresult)
+
+<br>
+
+### Retrieve Whois Current Information for Domain
+
+Operation ID: WHOIS_CURRENT
+
+Retrieve on demand Whois Current enrichment data for Domain
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | Domain | domain | True | string | Domain you want to enrich |
+
+
+ #### Returns
+##### **Body** : [WhoisCurrentResult](#whoiscurrentresult)
+
+
+<br>
+
+### Retrieve Dynamic DNS Information for IP Address
+
+Operation ID: IP_DYNAMIC_DNS
+
+Retrieve on demand Dynamic DNS enrichment data for IP Address
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | IPv4 Address | ip | True | string | IPv4 Address you want to enrich |
+
+
+  #### Returns
+##### **Body** :  [DynamicDNSResult](#dynamicdnsresult)
+
+<br>
+
+### Retrieve Dynamic DNS Information for Email Address
+
+Operation ID: DYNAMIC_DNS
+
+Retrieve on demand Dynamic DNS enrichment data for Email Address
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | Email Address | email | True | string |Email Address you want to enrich |
+ 
+  #### Returns
+##### **Body** :  [DynamicDNSResult](#dynamicdnsresult)
+
+
+<br>
+
+### Retrieve Passive Hash Information for IP Address 
+
+Operation ID: PASSIVE_HASH
+
+Retrieve on demand Passive Hash enrichment data for IP Address
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | IPv4 Address | ipv4 | True | string | IPv4 Address you want to enrich |
+
+
+ #### Returns
+##### **Body** : [passiveHashResult](#passivehashresult)
+
+<br>
+
+ ### Retrieve Sinkhole Information for IP Address
+
+Operation ID: SINKHOLE
+
+Retrieve on demand Sinkhole enrichment data for IP Address
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | IPv4 Address | ipv4 | True | string | IPv4 Address you want to enrich |
+
+ #### Returns
+##### **Body** :  [SinkholeResult](#sinkholeresult)
+
+<br>
+
+### Retrieve Device Geo Information for IPv4 Address
+
+Operation ID: IPV4_DEVICE_GEO
+
+Retrieve on demand Device Geo enrichment data for IPv4 Address
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | IPv4 Address | ipv4 | True | string | IPv4 Address you want to enrich |
+
+ #### Returns
+##### **Body** :  [DeviceGeoResult](#devicegeoresult)
+
+<br>
+
+### Retrieve Device Geo Information for IPv6 Address
+
+Operation ID: IPV6_DEVICE_GEO
+
+Retrieve on demand Device Geo enrichment data for IPv6 Address
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | IPv6 Address | ipv6 | True | string | IPv6 Address you want to enrich |
+ 
+
+ #### Returns
+##### **Body** :  [DeviceGeoResult](#devicegeoresult)
+
+<br>
+
+
+### Retrieve SSL Certificate Information for IP Address
+
+ Operation ID: SSL_CERTIFICATE
+
+Retrieve on demand SSL Certificate enrichment data for IP Address
+
+ #### Parameters
+
+ | Name | Key | Required | Type | Description
+ | ------ | ------ | ------ | ------ | ------ |
+ | IPv4 Address | ip | True | string | IPv4 Address you want to enrich |
+ 
+ #### Returns
+##### **Body** : [SSLCertificateResult](#sslcertificateresult)
+
+<br>
+
+
+### PassiveDNSResults
+
+| Name | Path | Type | Description
+| ------ | ------ | ------ | ------ |
+| cert_name | cert_name | string | The certificate provider name |
+|count | count | number | The passive dns count |
+|domain| domain | string | The domain of the passive dns information requested |
+|first_seen | first_seen | string | The first time this domain was seen | 
+|city_name | ip.geo.city_name | string | City of the ip organization |
+|country_iso_code | ip.geo.country_iso_code | string | Country ISO code of the ip organization |
+|country_name | ip.geo.country_name | string | Country name of the ip organization |
+|location_latitude | ip.geo.location_latitude | string | The latitude of the ip organization |
+|location_longitude | ip.geo.location_longitude | string | The longitude of the ip organization |
+|postal_code | ip.geo.postal_code | string | The postal code of the ip organization |
+|ip | ip.ip | string | IP of the organization |
+|autonomous_system_number | ip.isp.autonomous_system_number | string | The ASN of the ip |
+|autonomous_system_organization | ip.isp.autonomous_system_organization | string | The ASO of the ip |
+|ip_address | ip.isp.ip_address | string | The IP |
+|isp | ip.isp.isp | string | The Internet Service Provider |
+|organization | ip.isp.organization | string | The ISP organization |
+|ipv4 | ipv4 | string | The ipv4 address of the passive dns record |
+|ipv6 | ipv6 | string | The ipv6 address of the passive dns record |
+|last_seen | last_seen | string | The last time this domain was seen |
+|sha1 | sha1 | string | The sha1 Information |
+|sources | sources | string array | A list of pDNS providers which the data came from |
+
+<br>
+
+
+### WhoIsHistoricResult
+| Name | Path | Type | Description
+| ------ | ------ | ------ | ------ |
+|address | address | string array | The address information |
+|city | city | string array |  The city information |
+|country | country | string array | The country information |
+|data | data | string | The data information |
+|datetime | datetime | string | The datetime information |
+|domain | domain | string |  The domain of the registrant |
+|domain_2tld | domain_2tld | string | The second-level domain of the registrant |
+|domain_created_datetime | domain_created_datetime | string | The date and time when the Whois record was created |
+|domain_expires_datetime | domain_expires_datetime | string | The date and time when the Whois record expires |
+|domain_updated_datetime | domain_updated_datetime | string | The date and time when the Whois record was last updated |
+|email | email | string array | The email information |
+|idn_name | idn_name | string | The international domain name |
+|meta_data | meta_data | string | The metadata information |
+|name | name | string array | The name information |
+|nameserver | nameserver | string array |  The nameserver information |
+|phone | phone.phone | string |  The phone number of the registrant in e164 format |
+|carrier | phone.phone_info.carrier | string | Phone number carrier |
+|country | phone.phone_info.country | string | Phone number country |
+|geo | phone.phone_info.geo | string | Phone number geo can be city or province or region or country |
+|privacy_punch | privacy_punch | boolean | True if this record has additional information bypassing privacy protect |
+|registrar | registrar | string |  The domain registrar |
+|whois_hash | whois_hash | string | Internal use |
+|whois_id | whois_id | string | Internal use |
+
+<br>
+
+### WhoIsCurrentResult
+| Name | Path | Type | Description
+| ------ | ------ | ------ | ------ |
+| abuse_emails | items.abuse_emails | string array | The abuse emails information | 
+| address | items.address | string array | The address information |
+| city | items.city | string array | The city of the registrant |
+| country  | items.country  | string array | The country of the registrant |
+| data | items.data | string | The data information |
+| datetime | items.datetime | string | The datetime information |
+| domain | items.domain | string | The domain of the registrant |
+| domain_2tld | items.domain_2tld | string | The second-level domain of the registrant |
+| domain_created_datetime | items.domain_created_datetime | string | The date and time when the Whois record was created |
+| domain_expires_datetime | items.domain_expires_datetime | string | The date and time when the Whois record expires |
+| domain_updated_datetime | items.domain_updated_datetime | string | The date and time when the Whois record was last updated |
+| email | items.email | string array |The email information |
+| idn_name | items.idn_name | string | The international domain name |
+| meta_data | items.meta_data | string | The metadata information |
+| name | items.name | string array | The contact name (registrant contact, administrative contact, technical contact, or abuse contact) |
+| nameserver | items.nameserver | string array | The nameserver domain |
+| organization | items.organization | string array | The organization information |
+| phone | items.phone | string array | The phone number of the registrant in e164 format |
+| registrar | items.registrar  | string | The domain registrar 
+| state | items.state | string array | The state where domain was registered |
+| whois_hash | items.whois_hash | string | The hash information |
+| whois_id | items.whois_id | string | The whois id information |
+| domain | items.whois_nameserver.domain | string | The nameserver’s domain information |
+| domain_2tld | items.whois_nameserver.domain_2tld | string | The nameserver’s domain_2tld information |
+| whois_related_nameserver_id | items.whois_nameserver.whois_related_nameserver_id | string | The nameserver’s Id Information |
+| address | items.whois_pii.address | string | The personal identity address information |
+| city | items.whois_pii.city | string | The personal identity city information |
+| data | items.whois_pii.data | string | The personal identity data information |
+| email | items.whois_pii.email | string | The personal identity email information |
+| geo_country_alpha_2 | items.whois_pii.geo_country_alpha_2 | String | The personal identity country information |
+| name | items.whois_pii.name | string | The personal identity name information |
+| organization | items.whois_pii.organization| string | The personal identity organization information |
+| phone_e164 | items.whois_pii.phone_e164 | string | The personal identity Phone_e164 information |
+| state | items.whois_pii.state | string | The personal identity state information |
+| whois_related_pii_id | items.whois_pii.whois_related_pii_id | string | The personal identity Id information |
+| whois_related_type | items.whois_pii.whois_related_type | string | The personal identity related information |
+| source | source | string | The source information |
+| total_count | total_count | number | The total count information |
+
+<br>
+
+### DynamicDNSResult
+| Name | Path | Type | Description
+| ------ | ------ | ------ | ------ |
+|a_record | a_record | string | The A record for the domain |
+|account | account | string | The account holder name |
+|created | created | string |The date which the domain was created |
+|created_ip | created_ip | string | The ip address of the account holder |
+|domain | domain | string |The domain associated with the dynamic dns information |
+|domain_creator_ip | domain_creator_ip | string | The ip address of the domain creator |
+|email | email | string | The email address connected to the domain | The email address connected to the domain |
+
+<br>
+
+
+### PassiveHashResult
+| Name | Path | Type | Description
+| ------ | ------ | ------ | ------ |
+|domain | domain | string | The domain of the passive hash information requested |
+|md5_count | md5_count | number | The passive dns count |
+
+<br>
+
+
+### SinkholeResult
+| Name | Path | Type | Description
+| ------ | ------ | ------ | ------ |
+|count | count | string | The sinkhole count |
+|country_name | country_name | string | The country of the ip |
+|data_port | data_port | number | The data port |
+|datetime | datetime | string | The first seen date of the sinkhole |
+|ipv4 | ipv4 | string |  The ipv4 of the sinkhole |
+|last_seen | last_seen | string | The last seen date of the sinkhole |
+|organization_name | organization_name | string | The isp organization for the ip |
+|sink_source | sink_source | string | The ipv4 of the sink source |
+
+<br>
+
+
+### DeviceGeoResult
+| Name | Path | Type | Description
+| ------ | ------ | ------ | ------ |
+|datetime | datetime | string | A date-time string in RFC 3339 format |
+|device_geo_id | device_geo_id | string | Internal record ID |
+|device_user_agent | device_user_agent | string | The user agent for the device |
+|geo_country_alpha_2 | geo_country_alpha_2 | string | The ISO 3316 alpha-2 code for the country associated with the latitude/longitude reported |
+|geo_horizontal_accuracy | geo_horizontal_accuracy | number | The GPS horizontal accuracy |
+|ipv4 | ipv4 | string | The ipv4 address assigned to the device. A device may have either or ipv4 and ipv6 |
+|ipv6 | ipv6 | string | The ipv6 address assigned to the device. A device may have either or ipv4 and ipv6 |
+|latitude | latitude | number | Units are degrees on the WGS 84 spheroid |
+|longitude | longitude | number | Units are degrees on the WGS 84 spheroid |
+|wifi_bssid | wifi_bssid | string | The BSSID (MAC address) of the WIFI router that the device communicated through |
+|wifi_ssid | wifi_ssid | string | The SSID (name) of the WIFI network that the device communicated through |
+
+<br>
+
+
+### SSLCertificateResult
+| Name | Path | Type | Description
+| ------ | ------ | ------ | ------ |
+|related_count | related_count | number | The number of ip addresses connected to this certificate |
+|ip | ssl_certs.ip | string | The ip address associated with certificate |
+|cert_key | ssl_certs.ssl_cert.cert_key | string | The certificate key (sha1) |
+|expire_date | ssl_certs.ssl_cert.expire_date | string |The expiry date of the certificate |
+|issue_date | ssl_certs.ssl_cert.issue_date | string | The issue date of the certificate |
+|issuer_commonName | ssl_certs.ssl_cert.issuer_commonName | string | The common name that the certificate was issued from |
+|issuer_countryName | ssl_certs.ssl_cert.issuer_countryName | string | The country ISO the certificate was issued from |
+|issuer_localityName | ssl_certs.ssl_cert.issuer_localityName | string | The city where the issuer company is legally located |
+|issuer_organizationName | ssl_certs.ssl_cert.issuer_organizationName | string |  The organization name that issued the certificate |
+|issuer_organizationalUnitName| ssl_certs.ssl_cert.issuer_organizationalUnitName | string | The organization unit name that issued the certificate |
+|issuer_stateOrProvinceName | ssl_certs.ssl_cert.issuer_stateOrProvinceName | string | The issuer state or province |
+|md5 | ssl_certs.ssl_cert.md5 | string | The certificate MD5 |
+|serial_number | ssl_certs.ssl_cert.serial_number |  number | The certificate serial number |
+|sha1 | ssl_certs.ssl_cert.sha1 | string | The certificate sha1 |
+|sha_256 | ssl_certs.ssl_cert.sha_256 | string | The certificate sha256 |
+|sig_algo | ssl_certs.ssl_cert.sig_algo | string | The certificate signature algorithm |
+|signature | ssl_certs.ssl_cert.signature | string array | Signature split into multiple lines |
+|ssl_version | ssl_certs.ssl_cert.ssl_version | number | The SSL version |
+|subject_commonName | ssl_certs.ssl_cert.subject_commonName | string | The subject name that the certificate was issued to |
+|subject_countryName | ssl_certs.ssl_cert.subject_countryName | string | The country the certificate was issued to |
+|subject_localityName | ssl_certs.ssl_cert.subject_localityName | string |  The city where the subject company is legally located |
+|subject_organizationName | ssl_certs.ssl_cert.subject_organizationName |  string | The organization name that received the certificate
+|subject_organizationalUnitName | ssl_certs.ssl_cert.subject_organizationalUnitName |  string | The organization unit name that recieved the certificate |
+|subject_stateOrProvinceName | ssl_certs.ssl_cert.subject_stateOrProvinceName | string | The state or province name where the subject company is located |
+|timestamp | ssl_certs.ssl_cert.timestamp |  string | The certificate date and time |
