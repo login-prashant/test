@@ -1,6 +1,7 @@
 # Farsight
 
 ![Farsight](https://www.farsightsecurity.com/assets/media/svg/farsight-logo.svg "Farsight")
+
 Farsight integration to Microsoft Azure Sentinel provides direct, high volume access to Passive DNS data. It enables investigators and analysts to understand and defend against cyber adversaries and their infrastructure.
 
 <br>
