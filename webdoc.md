@@ -1,7 +1,7 @@
-# HYAS Insight
+# Farsight
 
-![HYAS](https://www.hyas.com/hubfs/logo-1.svg "HYAS")
-HYAS Insight provides On-Demand Enrichment of Passive DNS, Dynamic DNS, Passive Hash, SSL Certificate, Device Geo (Mobile Geolocation), Sinkhole, and Whois endpoints using the HYAS Insight enrichment API source.
+![Farsight](https://www.farsightsecurity.com/assets/media/svg/farsight-logo.svg "Farsight")
+Farsight integration to Microsoft Azure Sentinel provides direct, high volume access to Passive DNS data. It enables investigators and analysts to understand and defend against cyber adversaries and their infrastructure.
 
 <br>
 
