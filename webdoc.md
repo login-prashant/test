@@ -1,4 +1,4 @@
-# Farsight
+# Farsight Security
 
 ![Farsight](https://www.farsightsecurity.com/assets/media/svg/farsight-logo.svg "Farsight")
 
